@@ -1,6 +1,6 @@
 # Emscripten Browser Clipboard Library
 
-Header-only C++ library providing easy browser clipboard access, for programs built with Emscripten.
+Header-only C++ library providing easy browser clipboard access, for programs built with Emscripten.  All code in a single header.
 
 Intended for use with Emscripten code, this enables copy and paste functionality to and from the browser's clipboard, into your program.
 
