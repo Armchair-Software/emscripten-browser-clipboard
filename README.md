@@ -132,4 +132,7 @@ The async copy implementation currently ignores the result of the async operatio
 
 ## Other useful libraries
 
-You may also find the [Emscripten Browser File Library](https://github.com/Armchair-Software/emscripten-browser-file) useful - this allows you to transfer files using the browser upload / download interface, into memory in your C++ program.
+You may also find the following Emscripten helper libraries useful:
+
+- [Emscripten Browser File Library](https://github.com/Armchair-Software/emscripten-browser-file) - allows you to transfer files using the browser upload / download interface, into memory in your C++ program.
+- [Emscripten Browser Cursor](https://github.com/Armchair-Software/emscripten-browser-cursor) - easy manipulation of browser mouse pointer cursors from C++.
