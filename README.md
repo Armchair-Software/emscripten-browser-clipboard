@@ -8,6 +8,11 @@ There are two separate ways to copy data to the clipboard - a callback, or an in
 
 This offers several advantages over existing solutions - it uses modern JS APIs, and there is no need to create text elements alongside your canvas on your page HTML, or make any other changes to the page content.  Everything is handled by a single include in your C++ code.
 
+## Live demo
+
+Try it out in your browser: https://armchair-software.github.io/emscripten-clipboard-demo/
+
+Demo source: https://github.com/Armchair-Software/emscripten-clipboard-demo
 
 ## Functionality
 
