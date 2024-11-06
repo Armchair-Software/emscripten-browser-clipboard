@@ -1,5 +1,4 @@
-#ifndef EMSCRIPTEN_BROWSER_CLIPBOARD_H_INCLUDED
-#define EMSCRIPTEN_BROWSER_CLIPBOARD_H_INCLUDED
+#pragma once
 
 #include <string>
 #include <emscripten.h>
@@ -95,5 +94,3 @@ EMSCRIPTEN_KEEPALIVE inline char const *copy_return(copy_handler callback, void 
 }
 
 }
-
-#endif // EMSCRIPTEN_BROWSER_CLIPBOARD_H_INCLUDED
