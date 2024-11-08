@@ -50,7 +50,9 @@ EM_JS_INLINE(void, copy_js, (copy_handler callback, void *callback_data), {
 
 EM_JS_INLINE(void, copy_async_js, (char const *content_ptr), {
   /// Attempt to copy the provided text asynchronously
-  navigator.clipboard.writeText(UTF8ToString(content_ptr));
+  if (navigator.clipboard !== undefined) {
+    navigator.clipboard.writeText(UTF8ToString(content_ptr));
+  }
 });
 
 }
