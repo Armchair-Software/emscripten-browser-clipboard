@@ -26,8 +26,6 @@ inline void copy(std::string const &content);
 
 ///////////////////////////////// Implementation ///////////////////////////////
 
-namespace {
-
 EM_JS_INLINE(void, paste_js, (paste_handler callback, void *callback_data), {
   /// Register the given callback to handle paste events. Callback data pointer is passed through to the callback.
   /// Paste handler callback signature is:
@@ -70,8 +68,6 @@ inline void copy(std::string const &content) {
   copy_async_js(content.c_str());
 }
 
-namespace {
-
 extern "C" {
 
 EMSCRIPTEN_KEEPALIVE inline int paste_return(char const *paste_data, paste_handler callback, void *callback_data);
@@ -87,10 +83,6 @@ EMSCRIPTEN_KEEPALIVE inline char const *copy_return(copy_handler callback, void 
 EMSCRIPTEN_KEEPALIVE inline char const *copy_return(copy_handler callback, void *callback_data) {
   /// Call paste callback - this function is called from javascript when the paste event occurs
   return callback(callback_data);
-}
-
-}
-
 }
 
 }
