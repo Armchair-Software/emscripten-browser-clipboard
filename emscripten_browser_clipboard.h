@@ -26,12 +26,14 @@ inline void copy(std::string const &content);
 
 ///////////////////////////////// Implementation ///////////////////////////////
 
+namespace detail {
+
 EM_JS_INLINE(void, paste_js, (paste_handler callback, void *callback_data), {
   /// Register the given callback to handle paste events. Callback data pointer is passed through to the callback.
   /// Paste handler callback signature is:
   ///   void my_handler(std::string const &paste_data, void *callback_data = nullptr);
   document.addEventListener('paste', (event) => {
-    Module["ccall"]('paste_return', 'number', ['string', 'number', 'number'], [event.clipboardData.getData('text/plain'), callback, callback_data]);
+    Module["ccall"]('emscripten_browser_clipboard_detail_paste_return', 'number', ['string', 'number', 'number'], [event.clipboardData.getData('text/plain'), callback, callback_data]);
   });
 });
 
@@ -40,7 +42,7 @@ EM_JS_INLINE(void, copy_js, (copy_handler callback, void *callback_data), {
   /// Copy handler callback signature is:
   ///   char const *my_handler(void *callback_data = nullptr);
   document.addEventListener('copy', (event) => {
-    const content_ptr = Module["ccall"]('copy_return', 'number', ['number', 'number'], [callback, callback_data]);
+    const content_ptr = Module["ccall"]('emscripten_browser_clipboard_detail_copy_return', 'number', ['number', 'number'], [callback, callback_data]);
     event.clipboardData.setData('text/plain', UTF8ToString(content_ptr));
     event.preventDefault();
   });
@@ -51,38 +53,44 @@ EM_JS_INLINE(void, copy_async_js, (char const *content_ptr), {
   navigator.clipboard.writeText(UTF8ToString(content_ptr));
 });
 
-}
+} // namespace detail
 
 inline void paste(paste_handler callback, void *callback_data) {
   /// C++ wrapper for javascript paste call
-  paste_js(callback, callback_data);
+  detail::paste_js(callback, callback_data);
 }
 
 inline void copy(copy_handler callback, void *callback_data) {
   /// C++ wrapper for javascript copy call
-  copy_js(callback, callback_data);
+  detail::copy_js(callback, callback_data);
 }
 
 inline void copy(std::string const &content) {
   /// C++ wrapper for javascript copy call
-  copy_async_js(content.c_str());
+  detail::copy_async_js(content.c_str());
 }
+
+namespace detail {
 
 extern "C" {
 
-EMSCRIPTEN_KEEPALIVE inline int paste_return(char const *paste_data, paste_handler callback, void *callback_data);
+EMSCRIPTEN_KEEPALIVE inline int emscripten_browser_clipboard_detail_paste_return(char const *paste_data, paste_handler callback, void *callback_data);
 
-EMSCRIPTEN_KEEPALIVE inline int paste_return(char const *paste_data, paste_handler callback, void *callback_data) {
+EMSCRIPTEN_KEEPALIVE inline int emscripten_browser_clipboard_detail_paste_return(char const *paste_data, paste_handler callback, void *callback_data) {
   /// Call paste callback - this function is called from javascript when the paste event occurs
   callback(paste_data, callback_data);
   return 1;
 }
 
-EMSCRIPTEN_KEEPALIVE inline char const *copy_return(copy_handler callback, void *callback_data);
+EMSCRIPTEN_KEEPALIVE inline char const *emscripten_browser_clipboard_detail_copy_return(copy_handler callback, void *callback_data);
 
-EMSCRIPTEN_KEEPALIVE inline char const *copy_return(copy_handler callback, void *callback_data) {
+EMSCRIPTEN_KEEPALIVE inline char const *emscripten_browser_clipboard_detail_copy_return(copy_handler callback, void *callback_data) {
   /// Call paste callback - this function is called from javascript when the paste event occurs
   return callback(callback_data);
 }
 
 }
+
+} // namespace detail
+
+} // namespace emscripten_browser_clipboard
