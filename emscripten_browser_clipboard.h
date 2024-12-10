@@ -17,7 +17,7 @@ namespace emscripten_browser_clipboard {
 
 /////////////////////////////////// Interface //////////////////////////////////
 
-using paste_handler = void(*)(std::string const&, void*);
+using paste_handler = void(*)(std::string&&, void*);
 using copy_handler = char const*(*)(void*);
 
 inline void paste(paste_handler callback, void *callback_data = nullptr);
