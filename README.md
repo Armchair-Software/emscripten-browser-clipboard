@@ -33,7 +33,7 @@ If you want your callback to communicate with your program, the function accepts
 // ...
 
   // set a lambda as a callback to handle paste data:
-  emscripten_browser_clipboard::paste([](std::string const &paste_data, void *callback_data [[maybe_unused]]){
+  emscripten_browser_clipboard::paste([](std::string &&paste_data, void *callback_data [[maybe_unused]]){
     std::cout << "Copied clipboard data: " << paste_data << std::endl;
   });
 ```
@@ -47,8 +47,8 @@ The `paste` call takes the following arguments:
 The callback must have the following signature (defined as `emscripten_browser_clipboard::paste_handler`):
 
 ```cpp
-  void my_paste_handler(std::string const &paste_data,  // text content of the pasted data sent to the browser
-                        void *callback_data);           // the data pointer you passed to the paste function
+  void my_paste_handler(std::string &&paste_data,          // text content of the pasted data sent to the browser
+                        void *callback_data);              // the data pointer you passed to the paste function
 ```
 
 ### Copy
@@ -116,7 +116,7 @@ void set_content_from_imgui(void *user_data [[maybe_unused]], char const *text) 
 
 // ...
 
-  emscripten_browser_clipboard::paste([](std::string const &paste_data, void *callback_data [[maybe_unused]]){
+  emscripten_browser_clipboard::paste([](std::string &&paste_data, void *callback_data [[maybe_unused]]){
     /// Callback to handle clipboard paste from browser
     std::cout << "Clipboard updated from paste data: " << std::quoted(paste_data) << std::endl;
     content = std::move(paste_data);
