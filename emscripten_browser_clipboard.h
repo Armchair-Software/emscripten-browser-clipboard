@@ -31,7 +31,7 @@ namespace detail {
 EM_JS_INLINE(void, paste_js, (paste_handler callback, void *callback_data), {
   /// Register the given callback to handle paste events. Callback data pointer is passed through to the callback.
   /// Paste handler callback signature is:
-  ///   void my_handler(std::string const &paste_data, void *callback_data = nullptr);
+  ///   void my_handler(std::string &&paste_data, void *callback_data = nullptr);
   document.addEventListener('paste', (event) => {
     Module["ccall"]('emscripten_browser_clipboard_detail_paste_return', 'number', ['string', 'number', 'number'], [event.clipboardData.getData('text/plain'), callback, callback_data]);
   });
@@ -85,7 +85,7 @@ EMSCRIPTEN_KEEPALIVE inline int emscripten_browser_clipboard_detail_paste_return
 EMSCRIPTEN_KEEPALIVE inline char const *emscripten_browser_clipboard_detail_copy_return(copy_handler callback, void *callback_data);
 
 EMSCRIPTEN_KEEPALIVE inline char const *emscripten_browser_clipboard_detail_copy_return(copy_handler callback, void *callback_data) {
-  /// Call paste callback - this function is called from javascript when the paste event occurs
+  /// Call copy callback - this function is called from javascript when the copy event occurs
   return callback(callback_data);
 }
 
