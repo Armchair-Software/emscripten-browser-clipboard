@@ -7,8 +7,8 @@
   extern "C" {                                                                     \
   ret c_name params EM_IMPORT(js_name);                                            \
   EMSCRIPTEN_KEEPALIVE                                                             \
-  __attribute__((section("em_js"), aligned(1))) inline char __em_js__##js_name[] = \
-    #params "<::>" code;                                                           \
+  __attribute__((section("em_js"), aligned(1))) inline char __em_js__##js_name[] { \
+    #params "<::>" code };                                                         \
   }
 
 #define EM_JS_INLINE(ret, name, params, ...) _EM_JS_INLINE(ret, name, name, params, #__VA_ARGS__)
